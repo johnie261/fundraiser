@@ -1,8 +1,129 @@
-import React from 'react'
+import React, {useState} from 'react'
+import { useNavigate } from 'react-router-dom'
+
+import { money } from '../assets'
+import { checkIfImage } from '../utils'
+import { CustomButton, FormField } from '../components'
+import { useStateContext } from '../context'
+import { ethers } from 'ethers'
 
 const CreateCampaign = () => {
+  const [isLoading, setIsLoading] = useState(false)
+  const { createCampaign } = useStateContext()
+  const [form, setForm] = useState({
+    name: '',
+    title: '',
+    description: '',
+    target: '',
+    deadline: '',
+    image: ''
+  })
+
+  const navigate = useNavigate()
+
+  const handleSetForm = (e, fieldName) => {
+    setForm({...form, [fieldName]: e.target.value})
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+
+    checkIfImage(form.image, async(exists) => {
+      if(exists) {
+        setIsLoading(true)
+        await createCampaign({...form, target: ethers.utils.parseUnits(form.target, 18)})
+        setIsLoading(false)
+        navigate('/')
+      } else {
+        alert ('Provide valid image URL')
+        setForm({...form, image: ''})
+      }
+    })
+
+    console.log(form)
+  }
+
   return (
-    <div>CreateCampaign</div>
+    <div className="bg-[#1c1c24] flex justify-center items-center flex-col rounded-[10px] sm:p-10 p-4">
+      {isLoading && "loader..."}
+      <div className="flex justify-center items-center p-[16px] sm:min-w-[380px] bg-[#3a3a43] rounded-[10px]">
+        <h1 className="font-epilogue font-bold sm:text-[25px] text-[18px] leading-[38px] text-white">Start a Campaign</h1>
+      </div>
+
+      <form onSubmit={handleSubmit} className="w-full mt-[65px] flex flex-col gap-[30px]">
+        <div className="flex flex-wrap gap-[40px]">  
+          <FormField 
+            labelName="Your Name *"
+            placeholder="Enter your name"
+            inputType = "text"
+            value={form.name}
+            handleChange = {(e) => handleSetForm(e, 'name')}
+          />
+          <FormField 
+            labelName="Campaign title *"
+            placeholder="Write a title"
+            inputType = "text"
+            value={form.title}
+            handleChange = {(e) => handleSetForm(e, 'title')}
+          />
+        </div>
+
+        <FormField 
+          labelName="Story *"
+          placeholder="Write your story"
+          isTextArea
+          value={form.description}
+          handleChange = {(e) => handleSetForm(e, 'description')}
+        />
+
+        <div className="w-full flex justify-start items-center p-4 bg-[#8c6dfd] h-[120px] rounded-[10px]">
+          <img 
+            src={money}
+            alt="money"
+            className="w-[40px] h-[40px] object-contain"
+          />
+          <h4 className="font-epilogue font-bold text-[25px] text-white ml-[20px]">
+            You will get 100% of the raised amount
+          </h4>
+        </div>
+
+        <div className="flex flex-wrap gap-[40px]">  
+          <FormField 
+            labelName="Goal *"
+            placeholder="ETH 0.50"
+            inputType = "text"
+            value={form.target}
+            handleChange = {(e) => handleSetForm(e, 'target')}
+          />
+          <FormField 
+            labelName="End Date *"
+            placeholder="End Date"
+            inputType = "date"
+            value={form.deadline}
+            handleChange = {(e) => handleSetForm(e, 'deadline')}
+          />
+        </div>
+
+        <FormField 
+            labelName="Campaign image *"
+            placeholder="Place image URL of your campaign"
+            inputType="url"
+            value={form.image}
+            handleChange={(e) => handleSetForm(e, 'image')}
+          />
+
+        <div className="flex justify-center items-center mt-[40px]">
+          <button 
+            type="submit"
+            className={`flex items-center font-epilogue font-semibold text-[16px] leading-[26px] text-white min-h-[52px] px-4 rounded-[10px] bg-[#1dc071]`}
+          >
+            sumbit new campaign
+          </button>
+        </div>
+
+
+      </form>
+    </div>
   )
 }
 

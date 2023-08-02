@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
+import { useStateContext } from '../context';
+
 import { CustomButton } from './';
 import { logo, menu, search, thirdweb } from '../assets';
 import { navlinks } from '../constants';
@@ -11,8 +13,25 @@ const Navbar = () => {
   const [isActive, setIsActive] = useState('dashboard')
   const [toggleDrawer, setToggleDrawer] = useState(false)
   const navigate = useNavigate()
+  const { connect, address } = useStateContext()
 
-  let address = '0x4efdrf...'
+  console.log(connect)
+
+  // const handleConnect = async () => {
+  //   console.log('Attempting to connect...');
+  //   try {
+  //     await connect();
+  //     console.log('Successfully connected to MetaMask!');
+  //     // The rest of your logic after successful connection.
+  //   } catch (error) {
+  //     console.log('Failed to connect to MetaMask:', error);
+  //   }
+  // };
+
+  // const Hhg = () => {
+  //   console.log("john")
+  // }
+  // //let address = '0x4efdrf...'
 
   return (
     <div className="flex md:flex-row flex-col-reverse justify-between mb-[35px] gap-6">
@@ -35,10 +54,13 @@ const Navbar = () => {
           <CustomButton 
             btnType="button"
             title={address ? 'Create a campaign' : 'Connect'}
-            styles={address ? 'bg-[#1dc071]' : 'bg-[#8c6dfd}'}
+            styles={{ backgroundColor: address ? '#1dc071' : '#8c6dfd' }} 
             handleClick={()=>{
-              if(address) navigate('create-campaign')
-              else 'connect()'
+              if(address){
+                navigate('create-campaign')
+              } else {
+                connect();
+              }
             }}
           />
 
@@ -88,10 +110,14 @@ const Navbar = () => {
             <CustomButton 
               btnType="button"
               title={address ? 'Create a campaign' : 'Connect'}
-              styles={address ? 'bg-[#1dc071]' : 'bg-[#8c6dfd}'}
-              handleClick={()=>{
-                if(address) navigate('create-campaign')
-                else 'connect()'
+              styles={{ backgroundColor: address ? '#1dc071' : '#8c6dfd' }} 
+              handleClick={() => {
+                if(address){
+                  navigate('create-campaign')
+                } else {
+                  connect();
+                }
+                
               }}
             />
           </div>
