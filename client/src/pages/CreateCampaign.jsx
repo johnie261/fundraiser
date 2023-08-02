@@ -40,7 +40,6 @@ const CreateCampaign = () => {
       }
     })
 
-    console.log(form)
   }
 
   return (

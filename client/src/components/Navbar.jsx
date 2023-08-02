@@ -15,24 +15,6 @@ const Navbar = () => {
   const navigate = useNavigate()
   const { connect, address } = useStateContext()
 
-  console.log(connect)
-
-  // const handleConnect = async () => {
-  //   console.log('Attempting to connect...');
-  //   try {
-  //     await connect();
-  //     console.log('Successfully connected to MetaMask!');
-  //     // The rest of your logic after successful connection.
-  //   } catch (error) {
-  //     console.log('Failed to connect to MetaMask:', error);
-  //   }
-  // };
-
-  // const Hhg = () => {
-  //   console.log("john")
-  // }
-  // //let address = '0x4efdrf...'
-
   return (
     <div className="flex md:flex-row flex-col-reverse justify-between mb-[35px] gap-6">
       <div className="lg:flex-1 flex flex-row max-w-[458px] py-2 pl-4 pr-2 h-[52px] bg-[#1c1c24] rounded-[100px]">
