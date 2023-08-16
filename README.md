@@ -1,6 +1,6 @@
 
 <a name="readme-top"></a>
-<h1 align='center'> Lottery </h1>
+<h1 align='center'> Fundraiser </h1>
 
 # 📗 Table of Contents
 
